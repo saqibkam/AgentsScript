@@ -19,7 +19,7 @@
     }
 
 
-    setInterval(checkAndCollectIds, 5000);
+    setInterval(checkAndCollectIds, 10000);
 
     function findOfflineAgents() {
         const elementsNotInArray2 = myAgents.filter((element) => !onlineAgents.includes(element));

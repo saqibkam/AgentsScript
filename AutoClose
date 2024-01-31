@@ -8,12 +8,12 @@
         // Click on the element
         elementToClick.click();
 
-        // Close the tab
-        setTimeout(function () {
-            window.close();
-        }, 2000);
     } else {
         console.log("Element not found.");
     }
+     // Close the tab
+        setTimeout(function () {
+            window.close();
+        }, 2000);
 
 })();

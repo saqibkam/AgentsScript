@@ -4,34 +4,30 @@
 
     let onlineAgents = [];
     let offlineAgents = [];
-    let myAgents = [
-        1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069, 1070, 1071, 1072, 1073, 1074,
-        1020,
-        1031,
-        1037, 1038, 1039
-    ];
 
+    let myAgents = [1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069, 1070, 1071, 1072, 1073, 1074, 1020, 1031, 1037, 1038, 1039];
+    let restrictedColors = ["midnightblue", "purple", "yellow", "olive", "darkolivegreen", "saddlebrown", "black"]
+
+    const baseUrl = "https://atlc.i5.tel/vicidial/";
     // Function to check and collect the elements
     function checkAndCollectIds() {
         checkOnlineAgents();
-        find_offline_agents();
+        findOfflineAgents();
 
         console.log("\nOnlineAgents:")
         console.log(onlineAgents);
     }
 
-    // Execute the function every 5 seconds
-    setInterval(checkAndCollectIds, 5000); // 5000 milliseconds = 5 seconds
 
+    setInterval(checkAndCollectIds, 5000);
 
-    function find_offline_agents() {
+    function findOfflineAgents() {
         const elementsNotInArray2 = myAgents.filter((element) => !onlineAgents.includes(element));
         let display = document.querySelector("body > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3) > a:nth-child(1)")
         display.innerText = elementsNotInArray2;
         display.style.color = "white";
+        display.style.fontSize = 75;
     }
-
-
 
     function checkOnlineAgents() {
         let total_ids = document.querySelector("#realtime_content > b:nth-child(8) > font:nth-child(1)").innerText;
@@ -43,12 +39,43 @@
 
             i = i + 2;
             if (element) {
-                onlineAgents.push(parseInt(element.innerText));
+                let agentId = parseInt(element.innerText);
+                onlineAgents.push(agentId);
+                if (myAgents.includes(agentId)) {
+                    findAgentColor(xpath);
+                }
             } else {
                 console.log("Element not found");
             }
         }
     }
 
+    function findAgentColor(agent) {
+        //const parentXPath = "/html/body/table[2]/tbody/tr/td/form/span[2]/pre/font/a[7]/span";
+        const parentElement = document.evaluate(agent, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+        if (parentElement) {
+            const parentClassName = parentElement.className;
+            //if parentClassname is in restricted colors, open the agent
+            if (restrictedColors.includes(parentClassName)) {
+                const modified_agent = agent.replace(/\/span$/, '');
+
+                const element = document.evaluate(modified_agent, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+                if (element) {
+                    const href = element.getAttribute("href");
+                    if (href) {
+                        const fullUrl = baseUrl + href;
+                        window.open(fullUrl, '_blank');
+                    } else {
+                        console.log("Link attribute not found");
+                    }
+                }
+                console.log("Need to kick: ", parentElement);
+            }
+        } else {
+            console.log("Element not found");
+        }
+    }
 
 })();

@@ -1,0 +1,18 @@
+
+(function() {
+    'use strict';
+
+    // Check if the element exists
+const elementToClick = document.querySelector("body > center:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2) > table:nth-child(2) > tbody:nth-child(1) > tr:nth-child(5) > td:nth-child(1) > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(2) > td:nth-child(1) > font:nth-child(1) > b:nth-child(1) > form:nth-child(5) > input:nth-child(4)");
+
+if (elementToClick) {
+  // Click on the element
+  elementToClick.click();
+
+  // Close the tab
+  window.close();
+} else {
+  console.log("Element not found.");
+}
+
+})();

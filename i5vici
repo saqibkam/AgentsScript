@@ -1,37 +1,35 @@
-
-
-(function() {
+(function () {
     'use strict';
 
 
-let onlineAgents = [];
-let offlineAgents = [];
-let myAgents = [
+    let onlineAgents = [];
+    let offlineAgents = [];
+    let myAgents = [
         1060, 1061, 1062, 1063, 1064, 1065, 1066, 1067, 1068, 1069, 1070, 1071, 1072, 1073, 1074,
         1020,
         1031,
         1037, 1038, 1039
     ];
 
-// Function to check and collect the elements
-function checkAndCollectIds() {
-    checkOnlineAgents();
-    find_offline_agents();
+    // Function to check and collect the elements
+    function checkAndCollectIds() {
+        checkOnlineAgents();
+        find_offline_agents();
 
-    console.log("\nOnlineAgents:")
-    console.log(onlineAgents);
-}
+        console.log("\nOnlineAgents:")
+        console.log(onlineAgents);
+    }
 
-// Execute the function every 5 seconds
-setInterval(checkAndCollectIds, 5000); // 5000 milliseconds = 5 seconds
+    // Execute the function every 5 seconds
+    setInterval(checkAndCollectIds, 5000); // 5000 milliseconds = 5 seconds
 
 
-function find_offline_agents(){
-    const elementsNotInArray2 = myAgents.filter((element) => !onlineAgents.includes(element));
-    let display = document.querySelector("body > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3) > a:nth-child(1)")
-    display.innerText = elementsNotInArray2;
-    display.style.color = "white";
-}
+    function find_offline_agents() {
+        const elementsNotInArray2 = myAgents.filter((element) => !onlineAgents.includes(element));
+        let display = document.querySelector("body > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3) > a:nth-child(1)")
+        display.innerText = elementsNotInArray2;
+        display.style.color = "white";
+    }
 
 
 
@@ -52,3 +50,5 @@ function find_offline_agents(){
         }
     }
 
+
+})();

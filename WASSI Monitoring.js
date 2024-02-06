@@ -16,7 +16,10 @@
     let onlineAgents = [];
     let offlineAgents = [];
 
-    let myAgents = [6000, 6001,6002, 6003, 6004, 6005, 6006, 6007,6008, 6009, 6010, 6011, 6012, 6013, 6014, 6015, 6016, 6017, 6018, 6019, 6020, 6021, 6022, 6023, 6024, 6025, 6026, 6027, 6028, 6029, 6030]
+    const start = 6001;
+    const end = 6030;
+
+    const myAgents = Array.from({ length: end - start + 1 }, (_, index) => start + index);
     let restrictedColors = ["violet", "yellow"]
 
     const baseUrl = "https://wassi.sigmadialer.com/vicidial/";
@@ -40,28 +43,34 @@
         display.style.fontSize = 75;
     }
 
-    function checkOnlineAgents() {
-        let total_ids = document.querySelector("#realtime_content > b:nth-child(8) > font:nth-child(1)").innerText;
-        let i = 5;
-        onlineAgents = [];
-        for (let a = 0; a < total_ids; a++) {
-            ///html/body/table[2]/tbody/tr/td/form/span[2]/pre/font/a[9]/span/b
-            const xpath = `/html/body/table[2]/tbody/tr/td/form/span[2]/pre/font/a[${i}]/span`;
-            const element = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+   function checkOnlineAgents() {
+    let total_ids = document.querySelector("#realtime_content > b:nth-child(8) > font:nth-child(1)").innerText;
+    let onlineAgents = [];
+    let selectedXPath = null;
 
-            i = i + 2;
-            console.log("elements: ", element);
-            if (element) {
-                let agentId = parseInt(element.innerText);
-                onlineAgents.push(agentId);
-                if (myAgents.includes(agentId)) {
-                    findAgentColor(xpath);
-                }
-            } else {
-                console.log("Element not found");
+    for (let i = 5; i <= total_ids; i += 2) {
+        const xpath1 = `/html/body/table[2]/tbody/tr/td/form/span[2]/pre/font/a[${i}]/span`;
+        const xpath2 = `/html/body/font[2]/font/font/table/tbody/tr/td/form/span[2]/pre/font/a[${i}]/span`;
+
+        const element1 = document.evaluate(xpath1, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+        const element2 = document.evaluate(xpath2, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+        if (element1 || element2) {
+            selectedXPath = element1 ? xpath1 : xpath2;
+            let agentId = parseInt(element1 ? element1.innerText : element2.innerText);
+            onlineAgents.push(agentId);
+            if (myAgents.includes(agentId)) {
+                findAgentColor(selectedXPath);
             }
+        } else {
+            console.log(`Element not found for XPath 1: ${xpath1} and XPath 2: ${xpath2}`);
         }
     }
+
+    console.log("Selected XPath:", selectedXPath);
+    console.log("Online Agents:", onlineAgents);
+}
+
 
     function findAgentColor(agent) {
         //const parentXPath = "/html/body/table[2]/tbody/tr/td/form/span[2]/pre/font/a[7]/span";

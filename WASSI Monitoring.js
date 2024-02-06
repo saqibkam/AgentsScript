@@ -44,7 +44,7 @@
     }
 
    function checkOnlineAgents() {
-    let total_ids = document.querySelector("#realtime_content > b:nth-child(8) > font:nth-child(1)").innerText;
+    let total_ids = document.querySelector("#realtime_content > b:nth-child(9) > font:nth-child(1)").innerText;
     let onlineAgents = [];
     let selectedXPath = null;
 
